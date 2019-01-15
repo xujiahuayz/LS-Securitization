@@ -1,0 +1,112 @@
+\documentclass[a4paper]{article}
+
+\oddsidemargin 0cm 
+\textwidth 16cm
+
+\usepackage[bottom,flushmargin,hang]{footmisc}
+
+\usepackage[round]{natbib}
+\usepackage{marvosym}
+\usepackage{eurosym}
+\usepackage{calrsfs}
+\usepackage{mathrsfs}
+\usepackage{amssymb,amsmath}
+\usepackage{makecell}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{textcomp}
+\usepackage{pgfplots}
+\usepackage[capposition=top]{floatrow} %Footnote for graphs
+\pgfplotsset{compat=1.14}
+\usepackage{tikz}
+
+\usepackage{url}
+\usepackage{color}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{array,ragged2e}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+
+\usepackage{subfigure}
+
+\usepackage{epsfig,subfigure}
+\usepackage{pstricks,pgf}
+\usepackage{fancyhdr}
+\usepackage{array}
+\usepackage{slashbox}
+\usepackage{tabularx,ragged2e}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+\pagestyle{fancy}
+\fancyhead{}
+
+\renewcommand{\sectionmark}[1]{
+\markright{\thesection{} #1}}
+
+\renewcommand{\headheight}{24pt}
+
+\usepackage{leftidx}
+\usepackage{epsfig,subfigure}
+
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{rotating}
+
+\setlength{\parskip}{1em}
+
+\clubpenalty = 10000
+\widowpenalty = 10000 \displaywidowpenalty = 10000
+
+\renewcommand\arraystretch{1.2}
+
+\usepackage[colorlinks=false]{hyperref}
+\hypersetup{
+    colorlinks,%
+    citecolor=black,%
+    filecolor=black,%
+    linkcolor=black,%
+    urlcolor=black}
+
+\interfootnotelinepenalty=10000
+\usepackage[justification=centering]{caption}
+\usepackage{breakcites}
+
+
+\begin{document}
+
+\title{\bf{Securitization of Life Settlement Portfolios}}
+
+
+\author{Alexander~Braun and Jiahua~Xu
+\footnote{\noindent Alexander~Braun (\href{mailto:alexander.braun@unisg.ch}{alexander.braun@unisg.ch}) and Jiahua~Xu (\href{mailto:jiahua.xu@unisg.ch}{jiahua.xu@unisg.ch}) are from the Institute of Insurance Economics, University of St.~Gallen, Tannenstrasse~19, CH-9000 St. Gallen.
+}}
+
+
+% \date{Preliminary draft: Please do not cite or redistribute.}
+
+
+\maketitle
+\thispagestyle{empty}
+
+\begin{center}
+
+\begin{abstract}
+xx
+
+\hspace*{1cm} 
+\newline 
+{\bf Keywords:} xx\newline 
+{\bf JEL classification:} G11; G22; G28; G32; G38  \newline 
+
+\end{abstract}
+\end{center}
+\newpage
+
+\Sexpr{knit_child('lssec-latex.rnw')}
+
+\end{document}

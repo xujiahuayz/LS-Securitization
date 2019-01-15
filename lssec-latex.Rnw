@@ -1,0 +1,37 @@
+\Sexpr{set_parent('lssec.rnw')}
+
+<<cache=F, include=F, child='lssec-stats.Rnw'>>=
+@
+
+\onehalfspace
+\setcounter{page}{1}
+\fancyhead[L]{\textsc{Life Settlement Securitization}}
+
+\section{Introduction}\label{intro}
+\subsection{background}
+
+Securitization is a financial technique of pooling risk assets and repackaging the cash flows into securities, through which default risk is decoupled from the originator by a special purpose vehicle (SPV), allowing financial institutions to shed risk assets off their balance sheets. Common types of securitizations include asset-backed securities (ABS) and collateralized debt obligations (CDOs). Life settlement-backed securities (LSBS), still nascent, are undergoing a trial-and-error phase.
+
+In 2004, BNP Paribas and the European Investment Bank made the first attempt to issue longevity bonds. The planned £540 million issuance failed to attract sufficient investor interest as a result of their extremely long tenor, survival rate-based coupons, and lack of principle repayment. Lessons learned, Swiss Re successfully launched longevity-related notes through Kortis Capital Ltd. in 2010. The improvements to those new bonds are notably apparent through their shorter tenor, vanilla floating rate coupons, and principle-at-risk structure.
+
+Securitization remains an appealing funding source for life settlements investors. Securitizing life settlement portfolios is advantageous in that it offers longevity risk exposure in an attractive fixed-income format, and increases liquidity through tradable securities. However, certain life settlements characteristics call the feasibility of securitization into question. Although theoretically possible, ratings on life settlement securities are difficult to come by given life settlements’ unique cash flow pattern (i.e. cash negative for a prolonged initial period due to ongoing premium requirements) and the associated longevity risk that is difficult to assess accurately. In our study, we propose zero-coupon life settlement bonds which do not pay regular coupons, to avoid an additional cash drain. Furthermore, one may suggest creating tiered tranches catering for different risk appetites: the senior tranche carries the shorted expected tenor while bearing the lowest longevity risk and expected return; the junior tranche carries the longest expected tenor while bearing the highest longevity risk and expected return; and the mezzanine tranche, as implied in its name, sits in between (Braun, 2017).
+
+Another challenge, from the point of view of the equity investor, lies in setting the appropriate size and pricing of debt in the capital structure. The inherent risks in life settlements portfolios — both idiosyncratic and systematic — lead to cashflow uncertainty on the asset side of the deal, which is then magnified by the leverage on the liability side. Optimization of the liability structure can be viewed as a search problem in many dimensions: terms of debt, interest rate, separate stand-by agreements for premiums, number of lives in the pool, homogeneity of policy size, life expectancies, etc. Theoretically an infinite number of outcomes are possible, though only a limited subset is Pareto-efficient in terms of risk and return. We will develop an evolutionary algorithm to obtain efficient solutions to the size and pricing questions.
+
+Diversifying and minimizing idiosyncratic risk by optimizing a life settlements portfolio is key to securitization. Based on the sample data obtained from AA-Partners Ltd., we will be able to test different policy buckets employing historical and Monte Carlo simulations. Variation can be created through adjusting combination of different policy categories (by e.g. policy’s face value, policy type, carrier’s rating, insured’s demographic or clinical traits, etc.) as well as weights of those categories. Also worthy of investigation is the buyers’ access to capital and the optimal level of cash reserve against longevity risk. Sources of capital include self-funding, borrowing (possibly using policies as collateral, or premium financing), liquidating policy gradually and/or partially (analogous to reverse mortgage). We are confident that this topic of “life settlements securitization” will be appealing to a broad readership as the underlying theory is generalizable and also transferrable to other fields in finance.
+
+
+PIK
+
+
+% \appendix
+\section*{Appendices}\label{append}
+
+\renewcommand{\thesubsection}{\Alph{subsection}}
+
+\subsection{Calculation of $LE$}\label{app1}
+
+In life settlements, the life expectancy $LE$ is normally estimated as follows:
+
+
+\Sexpr{knit_child('lssec-tblfig.Rnw')}

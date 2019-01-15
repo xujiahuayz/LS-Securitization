@@ -1,0 +1,212 @@
+\documentclass[a4paper]{article}
+\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\newcommand{\SweaveOpts}[1]{}  % do not interfere with LaTeX
+\newcommand{\SweaveInput}[1]{} % because they are not real TeX commands
+\newcommand{\Sexpr}[1]{}       % will only be parsed by R
+
+
+
+\oddsidemargin 0cm 
+\textwidth 16cm
+
+\usepackage[bottom,flushmargin,hang]{footmisc}
+
+\usepackage[round]{natbib}
+\usepackage{marvosym}
+\usepackage{eurosym}
+\usepackage{calrsfs}
+\usepackage{mathrsfs}
+\usepackage{amssymb,amsmath}
+\usepackage{makecell}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{textcomp}
+\usepackage{pgfplots}
+\usepackage[capposition=top]{floatrow} %Footnote for graphs
+\pgfplotsset{compat=1.14}
+\usepackage{tikz}
+
+\usepackage{url}
+\usepackage{color}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{array,ragged2e}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+
+\usepackage{subfigure}
+
+\usepackage{epsfig,subfigure}
+\usepackage{pstricks,pgf}
+\usepackage{fancyhdr}
+\usepackage{array}
+\usepackage{slashbox}
+\usepackage{tabularx,ragged2e}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+\pagestyle{fancy}
+\fancyhead{}
+
+\renewcommand{\sectionmark}[1]{
+\markright{\thesection{} #1}}
+
+\renewcommand{\headheight}{24pt}
+
+\usepackage{leftidx}
+\usepackage{epsfig,subfigure}
+
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{rotating}
+
+\clubpenalty = 10000
+\widowpenalty = 10000 \displaywidowpenalty = 10000
+
+\renewcommand\arraystretch{1.2}
+
+\usepackage[colorlinks=false]{hyperref}
+\hypersetup{
+    colorlinks,%
+    citecolor=black,%
+    filecolor=black,%
+    linkcolor=black,%
+    urlcolor=black}
+
+\interfootnotelinepenalty=10000
+\usepackage[justification=centering]{caption}
+\usepackage{breakcites}
+
+
+
+
+\begin{document}
+
+
+
+
+
+
+
+
+
+\onehalfspace
+\setcounter{page}{1}
+\fancyhead[L]{\textsc{Life Settlement Securitization}}
+
+\section{Introduction}\label{intro}
+\subsection{background}
+
+ff
+
+
+% \appendix
+\section*{Appendices}\label{append}
+
+\renewcommand{\thesubsection}{\Alph{subsection}}
+
+\subsection{Calculation of $LE$}\label{app1}
+
+In life settlements, the life expectancy $LE$ is normally estimated as follows:
+
+
+\newline
+
+
+
+
+
+\newpage
+\onehalfspace
+\bibliographystyle{apalike}
+\bibliography{lshbsivw}
+
+\section*{Appendix}\label{append}
+
+\renewcommand{\thesubsection}{\Alph{subsection}}
+
+\begin{table}[h!]
+  \centering
+  \caption{Life settlement providers participant in AAP's monthly data collection}
+    \begin{tabular}{lcccccc}
+    \toprule
+      & 2011 & 2012 & 2013 & 2014 & 2015 & 2016 \\
+      \midrule
+   GWG Life & \multicolumn{1}{l}{(\checkmark)} &   &   &   &   &  \\
+    Legacy Benefits & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{(\checkmark)} & \multicolumn{1}{l}{(\checkmark)} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & (\checkmark) \\
+    Q Capital Strategies & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    Magna Life Settlements & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{(\checkmark)} &  \\
+    Life Equity & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    The Lifeline Program & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    SLG & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{(\checkmark)} &   &   &   &  \\
+    Settlement Group & \multicolumn{1}{l}{(\checkmark)} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    LifeTrust &   & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    Berkshire Settlements &   & \multicolumn{1}{l}{(\checkmark)} & \multicolumn{1}{l}{(\checkmark)} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{(\checkmark)} & (\checkmark) \\
+    Abacus Settlements &   & \multicolumn{1}{l}{(\checkmark)} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    Institutional Life Settlements &   & \multicolumn{1}{l}{(\checkmark)} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    Carlisle Asset Management &   &   & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    SL Investment Management &   &   & \multicolumn{1}{l}{(\checkmark)} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    Habersham Funding &   &   & \multicolumn{1}{l}{(\checkmark)} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    Life Settlement Solutions &   &   & \multicolumn{1}{l}{(\checkmark)} & \multicolumn{1}{l}{\checkmark} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    RiverRock Partners &   &   &   & \multicolumn{1}{l}{(\checkmark)} & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    FairMarket Life Settlements &   &   &   &   & \multicolumn{1}{l}{\checkmark} & \checkmark \\
+    Emergent Capital &   &   &   &   &   & (\checkmark) \\
+    \bottomrule
+    \end{tabular}%
+    \newline\footnotesize\justify \checkmark : data provided every month of the year. (\checkmark) : data provided in some, but all months of the year.
+  \label{tab:partic}%
+\end{table}%
+\end{document}

@@ -1,0 +1,17 @@
+\Sexpr{set_parent('lssec.rnw')}
+
+\newpage
+\onehalfspace
+\bibliographystyle{apalike}
+\bibliography{lshbsivw}
+
+\section*{Appendix}\label{append}
+
+\renewcommand{\thesubsection}{\Alph{subsection}}
+
+\begin{table}[h!]
+  \centering
+  \caption{Life settlement providers participant in AAP's monthly data collection}
+  
+  \label{tab:partic}%
+\end{table}%

@@ -1,0 +1,320 @@
+<<echo=F, error=F, cache=F, message=F, results='hide', warning=F, autodep=T>>=
+library(knitr)
+library(magrittr)
+
+options(stringsAsFactors = F)
+set_parent('lssec.Rnw')
+
+toggle=c(sel=F
+         )
+toggle[]=F
+# toggle[]=T
+@
+
+<<echo=F, error=F, cache=F, message=F, results='hide', warning=F, autodep=T>>=
+funcstar = function(p){
+ if (p < 0.001) {'***'} else {
+  if (p < 0.01) {'**'} else {
+    if (p < 0.05) {'*'} else {''}
+  }
+ }
+}
+
+funks = function(series1,series2){
+  p = ks.test(series1, series2)$p
+  pf= formatC(p, digits = 3, format = 'f')
+  p2 = t.test(series1, series2, na.action=na.omit, alternative = 'two.sided', mu = 0, paired = F, conf.level = 0.95)$p.value
+  p2f = formatC(p2, digits = 3, format = 'f')
+  p1 = p2/2
+  p1f = formatC(p1, digits = 3, format = 'f')
+  mtext(paste0('KS-test: $p=',pf,'$',funcstar(p),
+               '\nt-test 1: $p=',p1f,'$',funcstar(p1),
+               '\nt-test 2: $p=',p2f,'$',funcstar(p2)
+               ),side=3, line = -3.3, cex = 0.6)
+}
+
+funchi = function(tabl){
+p=chisq.test(tabl)$p.value
+pf = formatC(p, digits = 3, format = 'f')
+mtext(paste0('$\\chi^2 \\mathrmrm{-test: }p=', pf,'$', funcstar(p)), line =2, side = 1, cex = 0.8)
+}
+
+textlabel <- function (posit,ser,farbe,xl,yl,xm){
+    if(posit == -1){xpo<- xm-0.81*(xl-xm)
+    lef=0}
+    else {xpo<- xl
+    lef=1}
+    text(xpo, 0.8*yl, paste0('$n =', format(length(ser),big.mark=","),'$\r
+$\\mu =',round(mean(ser),3) %>% format(.,digits=3,nsmall=3,scientific =F, big.mark=','),'$\r
+$\\sigma =',round(sd(ser),3)%>% format(.,digits=3,nsmall=3,scientific =F, big.mark=','),'$\r
+$\\gamma =',round(skewness(ser),3)%>% format(.,digits=3,nsmall=3,scientific =F, big.mark=','),'$\r
+$\\kappa =',round(kurtosis(ser),3)%>% format(.,digits=3,nsmall=3,scientific =F, big.mark=','),'$'), cex = 0.7,col=farbe,xpd=NA, adj=c(lef,1))
+  }
+
+ funline = function(lin,rule){
+noquote(paste(paste(as.vector(unlist(lin)),collapse = ' & '),'\\\\',rule))
+ }
+
+  farbe1 = "black"
+  farbe2 = "red"
+  barcol1 = 'gray90'
+  barcol2 = 'gray70'
+  barcol3 = 'gray50'
+
+funcna = function(actual, predict){
+na.omit(cbind(actual, predict))
+}
+
+funcme=function(actual, predict){
+  actual0=funcna(actual, predict)[,1]
+  predict0=funcna(actual, predict)[,2]
+mean(actual0-predict0)
+}
+
+funcmae=function(actual, predict){
+  actual0=funcna(actual, predict)[,1]
+  predict0=funcna(actual, predict)[,2]
+mean(abs(actual0-predict0))
+}
+
+funcrmse=function(actual, predict){
+  actual0=funcna(actual, predict)[,1]
+  predict0=funcna(actual, predict)[,2]
+sqrt(mean((actual0-predict0)^2))
+}
+
+funcosr2=function(actual, predict){
+  actual0=funcna(actual, predict)[,1]
+  predict0=funcna(actual, predict)[,2]
+1 - (sum((actual0-predict0)^2)/sum((actual0-mean(actual0))^2))
+}
+
+  fig.height1 = 2.2
+@
+
+<<echo=F, error=F, cache=F, message=F, results='hide', warning=F, autodep=T>>=
+load('./vbt/vbt.Rdata')
+  
+#choosing to use vbt 15 or 08
+vbtable = 15 %>% formatC(width=2,flag=0) %>% paste0('vbt',.) %>% vbt[[.]]
+
+load('FullSample.Rdata')
+
+#subsetting sample
+FullSample %<>% .[
+  (.$Gender %in% c('M','F')) & 
+    (!is.na(.$Age)) & 
+    (!is.na(.$MULB)) & 
+    .$FA>1 & .$FA<=30000000,
+  ]
+#clean up smoker and premium finance
+FullSample$Smoker[FullSample$Smoker=='S'] = 'SM'
+tempind = grepl('y',FullSample$PreFinPol,ignore.case=T)
+FullSample$PreFinPol[tempind] = T
+FullSample$PreFinPol[!tempind] = F
+
+#premium rate to dollar premium
+premma = (FullSample[,paste0('M',1:360)] * FullSample$FA) %>% data.matrix(rownames.force = NA)
+premma[is.na(premma)] = 0
+
+nrs = NCOL(vbtable$mns)
+madj = matrix(1, nrow = NROW(FullSample), ncol = nrs)
+surv.ori = matrix(0, nrow = NROW(FullSample), ncol = nrs*12)
+surv.adj = surv.ori
+
+#adjusting mortality factor
+for (i in 1:NROW(FullSample)){
+  temp=FullSample[i,]
+  age=round(temp$Age) #ANB
+  vbtbl = paste0(temp$Gender,temp$Smoker) %>% tolower %>% vbtable[[.]]
+  mortf = age %>% paste0('a',.) %>% vbtbl[.,] #standard mortality, gender-smoker-age distinct
+  mf = temp$Gender==c('M','F') #binary male/female vector
+  agev = 1:nrs + age  #age over time
+  
+  #basic adjustment
+  if(temp$PreFinPol==F){
+    if(temp$MULB<=1.25){
+      basicadj= (c(0.7,0.75)*mf) %>% sum %>% rep(nrs)
+    } else if(temp$MULB>2){
+      basicadj= (c(0.9,1)*mf) %>% sum %>% rep(nrs)
+    } else if(temp$FA>=1000000){
+      basicadj= (c(0.75,0.85)*mf) %>% sum %>% rep(nrs)
+    } else basicadj= (c(0.85,0.9)*mf) %>% sum %>% rep(nrs)
+  } else if(temp$MULB>2){
+    basicadj= (c(0.75,0.75)*mf) %>% sum %>% rep(nrs)
+  } else {
+    basicadj=(agev>95)*0.7
+    basicadj[agev<=95]=seq(0.5,0.7,length.out = sum(agev<=95))
+  }
+  
+  #age-based adjustment
+  endrate=(c(0.85,0.95)*mf) %>% sum
+  abadj=(agev<85)*1+(agev>95)*endrate
+  abadj[abadj==0]=seq(1,endrate,length.out = sum(abadj==0))
+  
+  #wear-off adjustment
+  woadj=temp$MULB %>% rep(nrs)
+  stp=pmax(0,pmin(7,95-age))
+  wop=pmax(3,95-age-stp)
+  if (temp$MULB>1){
+    woadj[1:wop + stp] = seq(temp$MULB,1,length.out = wop+1)[-1]
+    woadj[(wop+stp+1):nrs] = 1   
+  }
+
+  
+  madj[i,]=basicadj*abadj*woadj
+  
+  surv.ori[i,] = pmax(1-temp$MULB*mortf,0)^(1/12) %>% rep(each=12) %>% cumprod #original curve
+  surv.adj[i,] = pmax(1-madj[i,]*mortf,0)^(1/12) %>% rep(each=12) %>% cumprod #adjusted curve
+}
+
+# cbind(FullSample$LEB,
+#       surv.ori %>% apply(1, sum),
+#       surv.adj %>% apply(1, sum)) #compare LEs
+
+@
+
+<<echo=F, error=F, cache=F, message=F, results='hide', warning=F, autodep=T>>=
+
+secind = which(FullSample$Tert=='NO') #securitized policies
+tempsample = FullSample[secind,]
+surv = surv.adj[secind,] #using adjusted stressed survival curve
+
+trial = 30
+
+#monte carlo le matrix
+le = surv %>% apply(1, function(s) 
+  approx(x=c(1,s),y=0:length(s),xout=runif(trial,0,1), ties=min)$y) %>% t
+
+# par(mfrow=c(1,2))
+# monte.carlo.le = mclema %>% apply(1,mean)
+# blended.le = tempsample$LEB
+# plot(monte.carlo.le,blended.le,cex=0.5)
+# abline(a=0,b=1,col='red')
+# 
+# blended.le %>% density %>% plot(col='red')
+# abline(v=blended.le %>% mean,col='red')
+# monte.carlo.le %>% density %>% lines
+# abline(v=monte.carlo.le %>% mean)
+
+prem=premma[secind,]
+lgt = (le+1) %>% ceiling %>% max(na.rm = T) #maximal term
+dblag = 3 #death benefit lag
+lgt %<>% sum(dblag)
+couponr = 0.09 #annual coupon rate
+coufreq = 12 #coupon payment every 12 months
+tenor = 12*10
+noredem = 1 #no paying back principal before this period
+odl = 5*10^8 #over draft limit
+odr = 0 #over draft rate
+unr = 0 #undrawn facility fee
+debr = 0 #debit interest rate
+serv = 1000 #service fee per policy per annum
+paydate = seq(from=coufreq,to=tenor, by=coufreq)+1
+
+
+eqt = (-6.5*10^8) %>% rep(lgt) #equity account
+debt = (10^8) %>% rep(lgt) #debt account
+
+irrb=rep(NA,trial)
+irrl=rep(NA,trial)
+
+for (i in 1:trial){
+
+p = matrix(0, nrow = length(secind), ncol = lgt)
+d = matrix(0, nrow = length(secind), ncol = lgt)
+
+for(j in 1:length(secind)){
+  prelen = le[j,i] %>% ceiling
+  prelen %<>% min(NCOL(prem))
+  p[j,1:prelen] = prem[j,1:prelen] %>% as.vector
+  d[j,le[j,i]+1+dblag] = tempsample$FA[j]
+}
+p %<>% apply(2,sum)  
+d %<>% apply(2,sum)
+cf = -p+d
+cf[1] = cf[1]-sum(tempsample$TP) # policy cash flow
+
+living=rep(0,lgt)
+living[1]=secind %>% length
+dd = le[,i] %>% ceiling %>% table
+living[(dd %>% names %>% as.numeric)+1]=-dd %>% as.vector
+living %<>% cumsum #lives in the pool
+
+eqt[2:lgt] = 0
+debt[2:lgt] = 0
+bank = rep(NA, lgt)
+bank[1] = debt[1]+cf[1]-eqt[1]
+
+cfbond = rep(0, lgt)
+
+for (j in 2:lgt){
+  if (bank[j-1]<0){
+    bal = bank[j-1]*(1+odr)-(odl+bank[j-1])*unr
+  } else {
+    bal = bank[j-1]*(1+debr)-odl*unr
+  } #balance after paying all bank fees
+  
+  if (j %in% paydate){
+  cfbond[j] = debt[j-1]*couponr
+  } #coupon payment
+  
+  bank[j]=bal-cfbond[j]+cf[j]-living[j]*serv #balance after coupon and premium payment
+  debt[j] = debt[j-1]
+  res = p[j]*2 #min reserve
+  if (bank[j]>res){
+  if (j %in% paydate & j > noredem & debt[j]>0){
+  debt[j]=max(debt[j]-(bank[j]-res),0) #amortizing debt
+  bank[j]=bank[j]-(debt[j-1]-debt[j])
+  }
+    if(debt[j]==0){
+      eqt[j]=bank[j]-res
+      bank[j]=res
+    }
+  }
+  if (bank[j] < -odl) break
+}
+
+r=uniroot(
+  function(r) sum(eqt/r^(1:lgt-1)),
+  c(0.5,200)
+  )$root
+
+irrl[i]=r^12-1
+
+r=uniroot(
+  function(r) sum((cfbond-c(debt[1],diff(debt)))/r^(1:lgt-1)),
+  c(0.5,200)
+  )$root
+
+irrb[i]=r^12-1
+  
+cf %>% 
+    cumsum %>% 
+    plot(type='l',xlim = c(0,200), ylim = c(-5,7)*200000000, col = 'grey', main=irrl[i], xlab = irrb[i], ylab=i)
+  abline(h=0)
+  
+cfbond %>% 
+    cumsum %>% 
+    lines(type='l', col = 'blue')
+
+bank %>% 
+    lines(type='l', col = 'red')
+
+debt %>% 
+    lines(type='l', col = 'green')
+
+eqt %>% 
+    cumsum %>% 
+    lines(type='l', col = 'yellow')
+
+d %>% 
+    cumsum %>% 
+    lines(type='l', col = 'brown')
+}
+
+irrl %>% density %>% plot
+abline(v=irrl%>%mean)
+
+
+@
